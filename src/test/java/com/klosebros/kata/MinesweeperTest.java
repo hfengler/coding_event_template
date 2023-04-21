@@ -13,9 +13,9 @@ class MinesweeperTest {
                                       {false, false, false, false},
                                       {false, false, false, false},
                                       {false, false, false, false}};
-
-        //WHEN
-
+        var minesweeper = new Minesweeper();
+         //WHEN
+        var result =
         //THEN
 
         assertThat(false).isTrue();
