@@ -4,26 +4,28 @@ public class MinesWeeper {
 
     public String getHints(String input) {
         char[] fields = input.toCharArray();
-
         String[] hints = new String[fields.length];
+
         for (int i = 0; i < fields.length; i++) {
-            hints[i] = countNachbarminen(i, fields);
+            hints[i] = countNeighbors(i, fields);
         }
 
-
-        if (input.equals("..*")) {
-            return "01*";
-        }
-        return "0";
+        return String.join("", hints);
     }
 
-    private String countNachbarminen(int index, char[] fields) {
+    private String countNeighbors(int index, char[] fields) {
         if (fields[index] == '*') {
             return "*";
         }
-        if (index == 1) {
-            return "1";
+        int counter = 0;
+
+        if (index > 0 && fields[index - 1] == '*') {
+            counter++;
         }
-        return "0";
+
+        if (index < fields.length - 1 && fields[index + 1] == '*') {
+            counter++;
+        }
+        return String.valueOf(counter);
     }
 }

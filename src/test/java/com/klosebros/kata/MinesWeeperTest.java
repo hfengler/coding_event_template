@@ -24,4 +24,9 @@ class MinesWeeperTest {
     void singleNeighbourOfMineShouldBeOne() {
         assertThat(game.getHints("..*")).isEqualTo("01*");
     }
+
+    @Test
+    void shouldCountMinesOnOneLine() {
+        assertThat(game.getHints("..*.*")).isEqualTo("01*2*");
+    }
 }
