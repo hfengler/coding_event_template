@@ -15,7 +15,7 @@ class MinesweeperTest {
                                       {false, false, false, false}};
         var minesweeper = new Minesweeper();
          //WHEN
-        var result =
+        var result = minesweeper.findMines(matrix);
         //THEN
 
         assertThat(false).isTrue();
