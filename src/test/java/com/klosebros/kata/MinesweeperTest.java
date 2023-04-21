@@ -7,7 +7,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MinesweeperTest {
 
     @Test
-    void deleteThisTest() {
+    void nonMineFound() {
+        //GIVEN
+        var matrix = new boolean[][]{ {false, false, false, false},
+                                      {false, false, false, false},
+                                      {false, false, false, false},
+                                      {false, false, false, false}};
+
+        //WHEN
+
+        //THEN
+
         assertThat(false).isTrue();
     }
 }
