@@ -23,6 +23,20 @@ class GildedRoseTest {
         app.updateQuality();
         Assertions.assertThat(app.items[0].quality).isEqualTo(1);
     }
+    @Test
+    void AgedSockGetsWorse() {
+        var app = createGildedRose(new Item("Aged Sock", 10, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isZero();
+    }
+
+    @Test
+    void experiationProductsGetsMoreWorse() {
+        var app = createGildedRose(new Item("Aged Sock", 0, 2));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isZero();
+    }
+
 
     private GildedRose createGildedRose(Item... items) {
         return new GildedRose(items);
