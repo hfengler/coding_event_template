@@ -9,6 +9,8 @@ class GildedRoseTest {
     private static final String AGED_SOCK = "Aged Sock";
     private static final String SULFURAS_HAND_OF_RAGNAROS = "Sulfuras, Hand of Ragnaros";
 
+    private static final String BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
+
     @Test
     void foo() {
         Item[] items = new Item[] {new Item("foo", 0, 0)};
@@ -45,12 +47,58 @@ class GildedRoseTest {
         Assertions.assertThat(app.items[0].quality).isEqualTo(50);
     }
 
-//    @Test
-//    void sulfurasQualityIsAllwaysSame() {
-//        var app = createGildedRose(new Item(SULFURAS_HAND_OF_RAGNAROS, 10, 50));
-//        app.updateQuality();
-//        Assertions.assertThat(app.items[0].quality).isEqualTo(50);
-//    }
+    @Test
+    void sulfurasQualityIsAllwaysSame() {
+        var app = createGildedRose(new Item(SULFURAS_HAND_OF_RAGNAROS, 1, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(1);
+        Assertions.assertThat(app.items[0].sellIn).isEqualTo(1);
+    }
+
+    @Test
+    void sulfurasQualityIsAllwaysSame2() {
+        var app = createGildedRose(new Item(SULFURAS_HAND_OF_RAGNAROS, -1, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(1);
+        Assertions.assertThat(app.items[0].sellIn).isEqualTo(-1);
+    }
+
+    @Test
+    void backstagePass11() {
+        var app = createGildedRose(new Item(BACKSTAGE_PASS, 11, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(2);
+        Assertions.assertThat(app.items[0].sellIn).isEqualTo(10);
+    }
+
+    @Test
+    void backstagePass10() {
+        var app = createGildedRose(new Item(BACKSTAGE_PASS, 10, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(3);
+        Assertions.assertThat(app.items[0].sellIn).isEqualTo(9);
+    }
+
+    @Test
+    void backstagePass5() {
+        var app = createGildedRose(new Item(BACKSTAGE_PASS, 5, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(4);
+    }
+
+    @Test
+    void backstagePass1() {
+        var app = createGildedRose(new Item(BACKSTAGE_PASS, 1, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(4);
+    }
+
+    @Test
+    void backstagePass0() {
+        var app = createGildedRose(new Item(BACKSTAGE_PASS, 0, 1));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(0);
+    }
 
     private GildedRose createGildedRose(Item... items) {
         return new GildedRose(items);
