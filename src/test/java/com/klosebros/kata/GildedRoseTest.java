@@ -1,6 +1,5 @@
 package com.klosebros.kata;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,10 +66,39 @@ class GildedRoseTest {
     }
 
     @Test
-    void backstageTicketGetHigherValueIfSellInGetsSmaller() {
+    void backstageTicketGetHigherValueIfSellInGetsSmaller10() {
         Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", 10, 5)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isEqualTo(7);
     }
+
+    @Test
+    void backstageTicketGetHigherValueIfSellInGetsSmaller5() {
+        Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", 5, 5)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(8);
+    }
+
+    @Test
+    void backstageTicketGet0ValueIfSellInIs0() {
+        Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", 1, 25)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(28);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(0);
+    }
+
+    @Test
+    void testAgedBrieGetQualityNeverGreater50() {
+        Item[] items = new Item[]{new Item("Aged Brie", -1, 48)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(50);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(50);
+    }
+
 }
