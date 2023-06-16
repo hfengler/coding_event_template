@@ -10,30 +10,42 @@ class GildedRose {
         this.items = items;
     }
 
+    private static void olderGetsBetter(Item item) {
+        if (item.quality >= 50) {
+            return;
+        }
+
+        item.quality = item.quality + 1;
+
+        if (item.name.equals(BACKSTAGE_PASSES)) {
+            handleBackstagePasses(item);
+        }
+    }
+
+    private static void handleBackstagePasses(Item item) {
+        if (item.sellIn < 11 && (item.quality < 50)) {
+            item.quality = item.quality + 1;
+
+        }
+
+        if (item.sellIn < 6 && (item.quality < 50)) {
+            item.quality = item.quality + 1;
+
+        }
+    }
+
+    private static void normalAging(Item item) {
+        if (item.quality > 0 && (!item.name.equals(SULFURAS))) {
+            item.quality = item.quality - 1;
+        }
+    }
+
     public void updateQuality() {
         for (Item item : items) {
-            if (!item.name.equals(AGED_BRIE)
-                    && !item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.quality > 0 && (!item.name.equals(SULFURAS))) {
-                    item.quality = item.quality - 1;
-
-                }
+            if (!item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES)) {
+                normalAging(item);
             } else {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
-
-                    if (item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.sellIn < 11 && (item.quality < 50)) {
-                            item.quality = item.quality + 1;
-
-                        }
-
-                        if (item.sellIn < 6 && (item.quality < 50)) {
-                            item.quality = item.quality + 1;
-
-                        }
-                    }
-                }
+                olderGetsBetter(item);
             }
 
             if (!item.name.equals(SULFURAS)) {
@@ -43,10 +55,7 @@ class GildedRose {
             if (item.sellIn < 0) {
                 if (!item.name.equals(AGED_BRIE)) {
                     if (!item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.quality > 0 && (!item.name.equals(SULFURAS))) {
-                            item.quality = item.quality - 1;
-
-                        }
+                        normalAging(item);
                     } else {
                         item.quality = 0;
                     }
