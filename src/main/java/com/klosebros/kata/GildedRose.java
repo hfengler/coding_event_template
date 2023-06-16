@@ -14,51 +14,67 @@ class GildedRose {
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
-            var isAgedBrie = isExpectedItem(i, AGED_BRIE);
-            var isBackstagePass = isExpectedItem(i, BACKSTAGE_PASSES);
-            var isSulfuras = isExpectedItem(i, SULFURAS);
+            Item item = items[i];
+
+            var isAgedBrie = isExpectedItem(item, AGED_BRIE);
+            var isBackstagePass = isExpectedItem(item, BACKSTAGE_PASSES);
+            var isSulfuras = isExpectedItem(item, SULFURAS);
+
+            boolean qualityLess50 = item.quality < 50;
+
             if (!isAgedBrie && !isBackstagePass) {
-                if (items[i].quality > 0 && !isSulfuras) {
-                    items[i].quality--;
+                if (item.quality > 0 && !isSulfuras) {
+                    item.quality--;
                 }
-            } else {
-                if (items[i].quality < 50) {
-                    items[i].quality++;
-                    if (isBackstagePass) {
-                        if (items[i].sellIn < 11 && items[i].quality < 50) {
-                            items[i].quality++;
-                        }
-                        if (items[i].sellIn < 6 && items[i].quality < 50) {
-                            items[i].quality++;
-                        }
-                    }
-                }
+            } else if (qualityLess50) {
+                item.quality++;
+                qualityHandlerBackstagePass(item);
             }
 
             if (!isSulfuras) {
-                items[i].sellIn--;
+                item.sellIn--;
             }
 
             // Sobald das Haltbarkeitsdatum überschritten ist, sinkt die Qualität doppelt so schnell
-            if (items[i].sellIn < 0) {
+            if (item.sellIn < 0) {
                 if (!isAgedBrie) {
                     if (!isBackstagePass) {
-                        if (items[i].quality > 0 && !isSulfuras){
-                            items[i].quality--;
+                        if (item.quality > 0 && !isSulfuras) {
+                            item.quality--;
                         }
                     } else {
-                        items[i].quality = 0;
-                    }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality++;
+                        item.quality = 0;
                     }
                 }
+                qualityHandlerAgedBrie(item);
             }
         }
     }
 
-    private boolean isExpectedItem(int i, String itemName) {
-        return items[i].name.equals(itemName);
+    private void qualityHandlerAgedBrie(Item item){
+        var isAgedBrie = isExpectedItem(item, AGED_BRIE);
+        boolean qualityLess50 = item.quality < 50;
+        if (isAgedBrie && qualityLess50) {
+            item.quality++;
+        }
+    }
+
+    private void qualityHandlerBackstagePass(Item item) {
+        var isBackstagePass = isExpectedItem(item, BACKSTAGE_PASSES);
+
+        if (isBackstagePass) {
+            boolean qualityLess50 = item.quality < 50;
+            if (item.sellIn < 11 && qualityLess50) {
+                item.quality++;
+            }
+            if (item.sellIn < 6 && qualityLess50) {
+                item.quality++;
+            }
+        }
+
+    }
+
+    private boolean isExpectedItem(Item item, String itemName) {
+        return item.name.equals(itemName);
     }
 }
