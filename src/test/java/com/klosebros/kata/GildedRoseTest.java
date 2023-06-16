@@ -3,6 +3,8 @@ package com.klosebros.kata;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class GildedRoseTest {
 
     @Test
@@ -10,7 +12,7 @@ class GildedRoseTest {
         Item[] items = new Item[]{new Item("foo", 0, 0)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        Assertions.assertThat(app.items[0].name).isEqualTo("foo");
+        assertThat(app.items[0].name).isEqualTo("foo");
     }
 
     @Test
@@ -19,12 +21,12 @@ class GildedRoseTest {
         Item[] items = new Item[]{new Item("foo", 1, 1)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        Assertions.assertThat(app.items[0].sellIn).isEqualTo(0);
-        Assertions.assertThat(app.items[0].quality).isZero();
+        assertThat(app.items[0].sellIn).isEqualTo(0);
+        assertThat(app.items[0].quality).isZero();
         app.updateQuality();
-        Assertions.assertThat(app.items[0].quality).isZero();
+        assertThat(app.items[0].quality).isZero();
         app.updateQuality();
-        Assertions.assertThat(app.items[0].quality).isZero();
+        assertThat(app.items[0].quality).isZero();
     }
 
     @Test
@@ -33,11 +35,27 @@ class GildedRoseTest {
         Item[] items = new Item[]{new Item("foo", 1, 10)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        Assertions.assertThat(app.items[0].sellIn).isEqualTo(0);
-        Assertions.assertThat(app.items[0].quality).isEqualTo(9);
+        assertThat(app.items[0].sellIn).isEqualTo(0);
+        assertThat(app.items[0].quality).isEqualTo(9);
         app.updateQuality();
-        Assertions.assertThat(app.items[0].sellIn).isEqualTo(-1);
-        Assertions.assertThat(app.items[0].quality).isEqualTo(7);
+        assertThat(app.items[0].sellIn).isEqualTo(-1);
+        assertThat(app.items[0].quality).isEqualTo(7);
+    }
+
+    @Test
+    void qualityOfAgedBrie() {
+        Item[] items = new Item[]{new Item("Aged Brie", 1, 10)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(11);
+    }
+
+    @Test
+    void qualityIsNeverGreaterAs50() {
+        Item[] items = new Item[]{new Item("Aged Brie", 1, 50)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertThat(app.items[0].quality).isEqualTo(50);
     }
 
 }
