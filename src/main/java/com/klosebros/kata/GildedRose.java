@@ -11,6 +11,38 @@ class GildedRose {
         this.items = items;
     }
 
+    private static void handleSellIn(Item item) {
+        if (isNotSulfuras(item)) {
+            decreaseSellIn(item);
+        }
+    }
+
+    private static void handleAging(Item item) {
+        if (isNotAgedBrie(item) && isNotBackstagePass(item)) {
+            normalAging(item);
+        } else {
+            olderGetsBetter(item);
+        }
+    }
+
+    private static void handleExpiredItems(Item item) {
+        if (item.sellIn >= 0) {
+            return;
+        }
+
+        if (isNotAgedBrie(item)) {
+            if (isNotBackstagePass(item)) {
+                normalAging(item);
+            } else {
+                item.quality = 0;
+            }
+        } else {
+            if (item.quality < MAX_QUALITY) {
+                increaseQuality(item);
+            }
+        }
+    }
+
     private static void olderGetsBetter(Item item) {
         if (item.quality >= MAX_QUALITY) {
             return;
@@ -49,39 +81,15 @@ class GildedRose {
         return !item.name.equals(SULFURAS);
     }
 
-    public void updateQuality() {
-        for (Item item : items) {
-            if (isNotAgedBrie(item) && isNotBackstagePass(item)) {
-                normalAging(item);
-            } else {
-                olderGetsBetter(item);
-            }
-
-            if (isNotSulfuras(item)) {
-                decreaseSellIn(item);
-            }
-
-            if (item.sellIn < 0) {
-                handleExpiredItems(item);
-            }
-        }
-    }
-
     private static void decreaseSellIn(Item item) {
         item.sellIn = item.sellIn - 1;
     }
 
-    private static void handleExpiredItems(Item item) {
-        if (isNotAgedBrie(item)) {
-            if (isNotBackstagePass(item)) {
-                normalAging(item);
-            } else {
-                item.quality = 0;
-            }
-        } else {
-            if (item.quality < MAX_QUALITY) {
-                increaseQuality(item);
-            }
+    public void updateQuality() {
+        for (Item item : items) {
+            handleAging(item);
+            handleSellIn(item);
+            handleExpiredItems(item);
         }
     }
 
