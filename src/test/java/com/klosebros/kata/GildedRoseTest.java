@@ -48,6 +48,13 @@ class GildedRoseTest {
     }
 
     @Test
+    void agedBrieIsNeverBetterThan50IfExpired() {
+        var app = createGildedRose(new Item(AGED_BRIE, -1, 49));
+        app.updateQuality();
+        Assertions.assertThat(app.items[0].quality).isEqualTo(50);
+    }
+
+    @Test
     void sulfurasQualityIsAllwaysSame() {
         var app = createGildedRose(new Item(SULFURAS_HAND_OF_RAGNAROS, 1, 1));
         app.updateQuality();
