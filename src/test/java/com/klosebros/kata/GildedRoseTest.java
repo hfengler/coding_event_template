@@ -104,7 +104,7 @@ class GildedRoseTest {
     void backstagePass0() {
         var app = createGildedRose(new Item(BACKSTAGE_PASS, 0, 1));
         app.updateQuality();
-        Assertions.assertThat(app.items[0].quality).isEqualTo(0);
+        Assertions.assertThat(app.items[0].quality).isZero();
     }
 
     private GildedRose createGildedRose(Item... items) {
